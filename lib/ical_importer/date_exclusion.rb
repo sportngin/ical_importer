@@ -2,10 +2,8 @@ module IcalImporter
   class DateExclusion
     attr_accessor :date_exclusion
 
-    def initialize(attributes)
-      attributes.each do |name, value|
-        instance_variable_set "@#{name}", value if [:date_exclusion].include? name.to_sym
-      end
+    def initialize(date)
+      @date_exclusion = date
     end
   end
 end

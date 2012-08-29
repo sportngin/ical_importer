@@ -57,7 +57,7 @@ module IcalImporter
 
     def set_date_exclusion
       # set any date exclusions
-      @local_event.date_exclusions = @event.exdate.flatten.map{|d| DateExclusion.new(:exclude_date => d)}
+      @local_event.date_exclusions = @event.exdate.flatten.map{|d| DateExclusion.new(d)}
     end
 
     def frequency_set

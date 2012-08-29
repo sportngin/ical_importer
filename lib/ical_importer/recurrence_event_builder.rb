@@ -30,7 +30,7 @@ module IcalImporter
         :location => remote_event.location || '',
         :start_date_time => remote_event.start_date_time,
         :end_date_time => remote_event.end_date_time,
-        :date_exclusions => [DateExclusion.new(:exclude_date => remote_event.recurrence_id)],
+        :date_exclusions => [DateExclusion.new(remote_event.recurrence_id)],
         :recurrence_id => remote_event.recurrence_id,
         :recurrence => true
       })
