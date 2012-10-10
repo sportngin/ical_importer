@@ -16,6 +16,23 @@ module IcalImporter
         RiCal.should_receive(:parse).with bare_stuff
         Parser.new(url)
       end
+
+      it "defaults a timeout to the DEFAULT_TIMEOUT" do
+        Parser.any_instance.stub(:open_ical).and_return bare_stuff
+        parser = Parser.new(url)
+        parser.timeout.should == Parser::DEFAULT_TIMEOUT
+      end
+
+      context "when a user defines a timeout" do
+        it "sets the timeout" do
+          Parser.any_instance.stub(:open_ical).and_return bare_stuff
+          parser = Parser.new(url, :timeout => 11)
+          parser.timeout.should == 11
+
+          parser.timeout = 10
+          parser.timeout.should == 10
+        end
+      end
     end
 
     describe "#should_parse?" do
@@ -89,6 +106,21 @@ module IcalImporter
 
       it "fails with an invalid protocol" do
         expect { subject.send(:open_ical, 'wrong_proto') }.to raise_error(ArgumentError, "Must be http or https")
+      end
+
+      it "will wait up to #{Parser::DEFAULT_TIMEOUT} secs" do
+        Timeout.should_receive(:timeout).with(Parser::DEFAULT_TIMEOUT)
+        subject.send(:open_ical, 'http')
+      end
+
+      context "when timeout is defined" do
+
+        it "will wait up to the defined time" do
+          subject.timeout = 9
+        Timeout.should_receive(:timeout).with(9)
+        subject.send(:open_ical, 'http')
+        end
+
       end
     end
 

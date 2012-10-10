@@ -21,6 +21,9 @@ Then you can do:
 ```ruby
 IcalImporter::Parser.new(a_url).parse # To get just an array of events
 
+# To get just an array of events, with a longer timeout [default is 8 sec]
+IcalImporter::Parser.new(a_url, :timeout => 40).parse
+
 IcalImporter::Parser.new(a_url).parse do |event|
   event.uid
   event.title

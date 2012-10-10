@@ -1,10 +1,19 @@
 module IcalImporter
   class Parser
     attr_reader :feed, :bare_feed, :url
+    attr_accessor :timeout
 
-    def initialize(url)
+    DEFAULT_TIMEOUT = 8
+
+    # Get a new Parser object
+    #
+    # url     - URL where we download the ical feed
+    # options - Options hash
+    #         :timeout  - Custom timeout for downloading ical feed [Default: 8]
+    def initialize(url, options={})
       @url = url
       @bare_feed = open_ical
+      @timeout = options[:timeout] || DEFAULT_TIMEOUT
       if should_parse?
         @bare_feed.pos = 0
         begin
@@ -57,7 +66,7 @@ module IcalImporter
     def open_ical(protocol = 'http')
       raise ArgumentError, "Must be http or https" unless %w[http https].include? protocol
       begin
-        ::Timeout::timeout(8) do
+        ::Timeout::timeout(@timeout) do
           open prepped_uri(protocol)
         end
       rescue
