@@ -12,8 +12,8 @@ module IcalImporter
     #         :timeout  - Custom timeout for downloading ical feed [Default: 8]
     def initialize(url, options={})
       @url = url
-      @bare_feed = open_ical
       @timeout = options[:timeout] || DEFAULT_TIMEOUT
+      @bare_feed = open_ical
       if should_parse?
         @bare_feed.pos = 0
         begin

@@ -25,7 +25,7 @@ module IcalImporter
 
       context "when a user defines a timeout" do
         it "sets the timeout" do
-          Parser.any_instance.stub(:open_ical).and_return bare_stuff
+          Timeout.should_receive(:timeout).with(11)
           parser = Parser.new(url, :timeout => 11)
           parser.timeout.should == 11
 
