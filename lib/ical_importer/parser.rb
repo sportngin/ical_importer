@@ -1,6 +1,6 @@
 module IcalImporter
   class Parser
-    attr_reader :feed, :bare_feed, :url
+    attr_reader :feed, :bare_feed, :url, :timezone
     attr_accessor :timeout
 
     DEFAULT_TIMEOUT = 8
@@ -22,6 +22,7 @@ module IcalImporter
           # I know, I'm dirty, fix this to log to a config'd log
         end
       end
+      @timezone = get_timezone
     end
 
     def should_parse?
@@ -54,6 +55,12 @@ module IcalImporter
     end
 
     private
+
+    def get_timezone
+      if feed.present? && feed.first.x_properties["X-WR-TIMEZONE"].present?
+        feed.first.x_properties["X-WR-TIMEZONE"].first.value
+      end
+    end
 
     def tap_and_each(list)
       list.tap do |r|

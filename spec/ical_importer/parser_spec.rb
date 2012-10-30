@@ -98,6 +98,24 @@ module IcalImporter
       end
     end
 
+    describe "#get_timezone" do
+      it "finds the feed's timezone out of the x properties" do
+        @value = stub
+        @value.should_receive(:value)
+        subject.stub :feed => [stub(x_properties: { "X-WR-TIMEZONE" =>  [@value] })]
+        subject.send(:get_timezone)
+      end
+
+      it "fails silently if no feed exists" do
+        subject.send(:get_timezone).should == nil
+      end
+
+      it "returns nil if no timezone x property exists" do
+        subject.stub :feed => [stub(x_properties: { "X-WR-DERPHERP" =>  [@value] })]
+        subject.send(:get_timezone).should be_nil
+      end
+    end
+
     describe "#open_ical" do
       it 'cleans up and tries to open an HTTP URL' do
         subject.stub :open => bare_stuff
