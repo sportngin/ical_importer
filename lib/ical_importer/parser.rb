@@ -74,7 +74,7 @@ module IcalImporter
       raise ArgumentError, "Must be http or https" unless %w[http https].include? protocol
       begin
         ::Timeout::timeout(@timeout) do
-          open prepped_uri(protocol)
+          open prepped_uri(protocol), "r:UTF-8"
         end
       rescue
         return open_ical 'https' if protocol == 'http'
