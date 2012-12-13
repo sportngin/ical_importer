@@ -116,6 +116,24 @@ module IcalImporter
       end
     end
 
+    describe "#get_name" do
+      it "finds the feed's name out of the x properties" do
+        @value = stub
+        @value.should_receive(:value)
+        subject.stub :feed => [stub(x_properties: { "X-WR-CALNAME" =>  [@value] })]
+        subject.send(:get_name)
+      end
+
+      it "fails silently if no feed exists" do
+        subject.send(:get_name).should == nil
+      end
+
+      it "returns nil if no timezone x property exists" do
+        subject.stub :feed => [stub(x_properties: { "X-WR-DERPHERP" =>  [@value] })]
+        subject.send(:get_name).should be_nil
+      end
+    end
+
     describe "#open_ical" do
       it 'cleans up and tries to open an HTTP URL' do
         subject.stub :open => bare_stuff

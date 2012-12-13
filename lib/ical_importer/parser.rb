@@ -1,6 +1,6 @@
 module IcalImporter
   class Parser
-    attr_reader :feed, :bare_feed, :url, :timezone
+    attr_reader :feed, :bare_feed, :url, :timezone, :name
     attr_accessor :timeout
 
     DEFAULT_TIMEOUT = 8
@@ -23,6 +23,7 @@ module IcalImporter
         end
       end
       @timezone = get_timezone
+      @name = get_name
     end
 
     def should_parse?
@@ -59,6 +60,12 @@ module IcalImporter
     def get_timezone
       if feed.present? && feed.first.x_properties["X-WR-TIMEZONE"].present?
         feed.first.x_properties["X-WR-TIMEZONE"].first.value
+      end
+    end
+
+    def get_name
+      if feed.present? && feed.first.x_properties["X-WR-CALNAME"].present?
+        feed.first.x_properties["X-WR-CALNAME"].first.value
       end
     end
 
