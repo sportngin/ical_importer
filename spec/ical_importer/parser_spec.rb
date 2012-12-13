@@ -128,7 +128,7 @@ module IcalImporter
         subject.send(:get_name).should == nil
       end
 
-      it "returns nil if no timezone x property exists" do
+      it "returns nil if no name x property exists" do
         subject.stub :feed => [stub(x_properties: { "X-WR-DERPHERP" =>  [@value] })]
         subject.send(:get_name).should be_nil
       end
