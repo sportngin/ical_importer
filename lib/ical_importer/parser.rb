@@ -83,14 +83,14 @@ module IcalImporter
         ::Timeout::timeout(@timeout) do
           open prepped_uri(protocol), "r:UTF-8"
         end
-      rescue
+      rescue StandardError
         return open_ical 'https' if protocol == 'http'
         nil
       end
     end
 
     def prepped_uri(protocol)
-      uri = url.strip.gsub(/^[Ww]ebcal:/, "#{protocol}:")
+      uri = url.strip.gsub(/\A([Ww]ebcal|https?):/, "#{protocol}:")
       uri = begin
               URI.unescape(uri)
             rescue URI::InvalidURIError
