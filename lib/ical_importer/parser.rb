@@ -90,8 +90,7 @@ module IcalImporter
     end
 
     def prepped_uri(protocol)
-      uri = url.strip.gsub(/^[Ww]ebcal:/, "#{protocol}:")
-      uri = url.strip.gsub(/^http:/, "#{protocol}:") if protocol == 'https'
+      uri = url.strip.gsub(/\A([Ww]ebcal|https?):/, "#{protocol}:")
       uri = begin
               URI.unescape(uri)
             rescue URI::InvalidURIError
