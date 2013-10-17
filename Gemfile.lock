@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ical_importer (0.0.19)
+    ical_importer (0.1.1)
       activesupport (~> 3.0.15)
       i18n
       ri_cal
@@ -9,10 +9,10 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (3.0.16)
+    activesupport (3.0.20)
     awesome_print (1.0.2)
     diff-lcs (1.1.3)
-    i18n (0.6.0)
+    i18n (0.6.5)
     rake (0.9.2.2)
     ri_cal (0.8.8)
     rspec (2.11.0)
