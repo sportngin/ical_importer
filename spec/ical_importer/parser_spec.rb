@@ -172,6 +172,15 @@ module IcalImporter
         end
       end
 
+      describe "http" do
+        let(:base_url) { "://some_url" }
+        let(:https_url) { "https#{base_url}" }
+        let(:url) { "http#{base_url}" }
+        it "attempt https when http fails" do
+          subject.send(:prepped_uri, 'https').should == https_url
+        end
+      end
+
       describe "webcal" do
         let(:base_url) { "://some_url" }
         let(:http_url) { "http#{base_url}" }
