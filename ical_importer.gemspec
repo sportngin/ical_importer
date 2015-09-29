@@ -17,6 +17,7 @@ Gem::Specification.new do |gem|
   gem.version       = IcalImporter::VERSION
 
   gem.add_dependency 'activesupport', ['> 3.0.0', '< 4.0.0']
+  gem.add_dependency 'icalendar'
   gem.add_dependency 'ri_cal'
   gem.add_dependency 'i18n'
 

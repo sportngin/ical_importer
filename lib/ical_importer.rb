@@ -1,4 +1,5 @@
 require 'active_support/all'
+require 'icalendar'
 require 'ri_cal'
 
 require 'open-uri'
