@@ -17,7 +17,7 @@ module IcalImporter
 
       it "fails with incorrect event type" do
         new_event = stub(:is_a? => false)
-        expect { subject.<<(new_event) }.to raise_error(ArgumentError, "Must be an Icalendar Event")
+        expect { subject.<<(new_event) }.to raise_error(ArgumentError, "Must be a RiCal Event")
       end
     end
 

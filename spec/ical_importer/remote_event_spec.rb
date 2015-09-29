@@ -4,7 +4,8 @@ module IcalImporter
     subject { RemoteEvent.new(event) }
     let(:event) { stub :dtstart => stub(:tzid => nil) }
     it { should respond_to :description }
-    it { should respond_to :rrule }
+    it { should respond_to :recurs? }
+    it { should respond_to :rrule_property }
     it { should respond_to :exdate }
     describe "#initialize" do
       describe "dtstart tzid nil" do
