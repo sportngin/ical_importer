@@ -49,7 +49,7 @@ module IcalImporter
       raise ArgumentError, "Should be dtend or dtstart" unless [:dtstart, :dtend].include? event_method
       event_time = event.send event_method
       if event_time.is_a? DateTime
-        (event_time.tzid == :floating) ? event_time : event_time.utc
+        (event_time.utc?) ? event_time.utc : event_time
       else
         begin
           event_time.to_datetime

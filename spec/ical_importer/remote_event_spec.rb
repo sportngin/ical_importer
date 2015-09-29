@@ -41,6 +41,7 @@ module IcalImporter
       describe "without a floating tzid" do
         let(:event) { stub :dtstart => stub(
           :is_a? => true,
+          :utc? => true,
           :tzid => nil,
           :time => "20120715".to_datetime,
           :utc => "20120715".to_datetime.utc) }
@@ -51,7 +52,7 @@ module IcalImporter
     end
 
     describe "#event_attributes" do
-      let(:event) { RiCal.parse(sample_ics).first.events.first }
+      let(:event) { Icalendar.parse(sample_ics).first.events.first }
       it "fills in some attributes" do
         subject.event_attributes.should == {
           :uid => "1629F7A5-5A69-43CB-899E-4CE9BD5F069F",
