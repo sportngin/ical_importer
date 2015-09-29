@@ -6,14 +6,13 @@ module IcalImporter
     let(:url) { "http://some_url" }
     let(:bare_stuff) { stub :pos= => true }
     before do
-      ::Timeout.stub!(:timeout).and_yield
       RemoteEvent.any_instance.stub :all_day_event? => true
     end
 
     describe '#initialize' do
       it "parses with rical" do
         Parser.any_instance.stub(:open_ical).and_return bare_stuff
-        RiCal.should_receive(:parse).with bare_stuff
+        Icalendar.should_receive(:parse).with bare_stuff
         Parser.new(url)
       end
 
@@ -85,7 +84,8 @@ module IcalImporter
     describe "#parse" do
       let(:url) { sample_ics_path }
       it "returns 3 events" do
-        subject.parse.count.should == 3
+        subject.parse
+        subject.all_events.count.should == 3
       end
 
       it "can use a block to manipulate events" do
@@ -102,7 +102,7 @@ module IcalImporter
       it "finds the feed's timezone out of the x properties" do
         @value = stub
         @value.should_receive(:value)
-        subject.stub :feed => [stub(x_properties: { "X-WR-TIMEZONE" =>  [@value] })]
+        subject.stub :feed => [stub(custom_properties: { "x-wr-timezone" =>  [@value] })]
         subject.send(:get_timezone)
       end
 
@@ -111,7 +111,7 @@ module IcalImporter
       end
 
       it "returns nil if no timezone x property exists" do
-        subject.stub :feed => [stub(x_properties: { "X-WR-DERPHERP" =>  [@value] })]
+        subject.stub :feed => [stub(custom_properties: { "x-wr-derpherp" =>  [@value] })]
         subject.send(:get_timezone).should be_nil
       end
     end
@@ -120,7 +120,7 @@ module IcalImporter
       it "finds the feed's name out of the x properties" do
         @value = stub
         @value.should_receive(:value)
-        subject.stub :feed => [stub(x_properties: { "X-WR-CALNAME" =>  [@value] })]
+        subject.stub :feed => [stub(custom_properties: { "x-wr-calname" =>  [@value] })]
         subject.send(:get_name)
       end
 
@@ -129,7 +129,7 @@ module IcalImporter
       end
 
       it "returns nil if no name x property exists" do
-        subject.stub :feed => [stub(x_properties: { "X-WR-DERPHERP" =>  [@value] })]
+        subject.stub :feed => [stub(custom_properties: { "x-wr-derpherp" =>  [@value] })]
         subject.send(:get_name).should be_nil
       end
     end
@@ -145,7 +145,7 @@ module IcalImporter
       end
 
       it "will wait up to #{Parser::DEFAULT_TIMEOUT} secs" do
-        Timeout.should_receive(:timeout).with(Parser::DEFAULT_TIMEOUT)
+        Timeout.should_receive(:timeout).twice.with(Parser::DEFAULT_TIMEOUT)
         subject.send(:open_ical, 'http')
       end
 

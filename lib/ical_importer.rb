@@ -1,4 +1,6 @@
 require 'active_support/all'
+require 'tzinfo'
+require 'icalendar'
 require 'ri_cal'
 
 require 'open-uri'

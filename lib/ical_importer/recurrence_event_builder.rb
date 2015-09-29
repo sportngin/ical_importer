@@ -7,7 +7,7 @@ module IcalImporter
     end
 
     def <<(event)
-      raise ArgumentError, "Must be a RiCal Event" unless event.is_a? RiCal::Component::Event
+      raise ArgumentError, "Must be an Icalendar Event" unless event.is_a? Icalendar::Event
       @events_to_build << event
     end
 
