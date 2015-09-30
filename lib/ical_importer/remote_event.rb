@@ -31,7 +31,7 @@ module IcalImporter
 
     def event_attributes
       {
-        :uid => uid.to_s,
+        :uid => uid.value_ical,
         :title => summary,
         :utc => utc?,
         :description => description,
