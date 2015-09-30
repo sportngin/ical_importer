@@ -61,9 +61,9 @@ module IcalImporter
     end
 
     def frequency_set
-      # if .bounded? is an integer that's googles "recur X times"
+      # if bounded is an integer that's googles "recur X times"
       # if that's the case we try to figure out the date it should be by
-      # multiplying thise "X" times by the frequency that the event recurrs
+      # multiplying this "X" times by the frequency that the event recurrs
       bounded = @rrule.count || @rrule.until
       interval = @rrule.interval || 1
       case @rrule.frequency
@@ -84,7 +84,7 @@ module IcalImporter
         # recurrence X times is probably broken - we can select multiple times in a week
         @local_event.recur_end_date = @local_event.start_date_time + ((bounded * interval - 1) / remote_days.length).weeks if bounded.is_a? Fixnum
       when "MONTHLY"
-        @local_event.recur_month_repeat_by = (@rrule.to_ical =~ /BYDAY/) ? "day_of_week" : "day_of_month"
+        @local_event.recur_month_repeat_by = (@rrule.value_ical =~ /BYDAY/) ? "day_of_week" : "day_of_month"
         @local_event.recur_end_date = @local_event.start_date_time + (bounded * interval - 1).months if bounded.is_a? Fixnum # convert X times to a date
       when "YEARLY"
         @local_event.recur_end_date = @local_event.start_date_time + (bounded * interval - 1).years if bounded.is_a? Fixnum # convert X times to a date

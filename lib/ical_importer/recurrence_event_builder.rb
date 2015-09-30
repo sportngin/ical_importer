@@ -24,7 +24,7 @@ module IcalImporter
     def build_new_local_event(remote_event)
       remote_event = RemoteEvent.new remote_event
       LocalEvent.new({
-        :uid => remote_event.uid,
+        :uid => remote_event.uid.value_ical,
         :title => remote_event.summary,
         :description => remote_event.description,
         :location => remote_event.location || '',
