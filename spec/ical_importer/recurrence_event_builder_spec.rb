@@ -34,10 +34,10 @@ module IcalImporter
     end
 
     describe "#build_new_local_event" do
-      let(:remote_event) { stub :summary => "birthdayy",
-                           :uid => stub(:value_ical => 1),
-                           :description => "do stuff",
-                           :location => "here",
+      let(:remote_event) { stub :summary => stub(:to_s => "birthdayy"),
+                           :uid => stub(:to_s => 1),
+                           :description => stub(:to_s => "do stuff"),
+                           :location => stub(:to_s => "here"),
                            :start_date_time => "today",
                            :end_date_time => "tomorrow",
                            :recurrence_id => 1

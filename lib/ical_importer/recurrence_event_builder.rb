@@ -24,10 +24,10 @@ module IcalImporter
     def build_new_local_event(remote_event)
       remote_event = RemoteEvent.new remote_event
       LocalEvent.new({
-        :uid => remote_event.uid.value_ical,
-        :title => remote_event.summary,
-        :description => remote_event.description,
-        :location => remote_event.location || '',
+        :uid => (remote_event.uid) ? remote_event.uid.to_s : nil,
+        :title => (remote_event.summary) ? remote_event.summary.to_s : nil,
+        :description => (remote_event.description) ? remote_event.description.to_s : nil,
+        :location => (remote_event.location)? remote_event.location.to_s : '',
         :start_date_time => remote_event.start_date_time,
         :end_date_time => remote_event.end_date_time,
         :date_exclusions => [DateExclusion.new(remote_event.recurrence_id)],

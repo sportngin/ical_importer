@@ -31,11 +31,11 @@ module IcalImporter
 
     def event_attributes
       {
-        :uid => uid.value_ical,
-        :title => summary,
+        :uid => (uid) ? uid.to_s : nil,
+        :title => (summary) ? summary.to_s : nil,
         :utc => utc?,
-        :description => description,
-        :location => location || '',
+        :description => (description) ? description.to_s : nil,
+        :location => (location) ? location.to_s : '',
         :start_date_time => start_date_time,
         :end_date_time => end_date_time,
         :all_day_event => all_day_event?
