@@ -35,7 +35,7 @@ module IcalImporter
 
     describe "#build_new_local_event" do
       let(:remote_event) { stub :summary => "birthdayy",
-                           :uid => 1,
+                           :uid => stub(:value_ical => 1),
                            :description => "do stuff",
                            :location => "here",
                            :start_date_time => "today",
