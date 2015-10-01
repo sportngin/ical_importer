@@ -102,7 +102,7 @@ module IcalImporter
       it "finds the feed's timezone out of the x properties" do
         @value = stub
         @value.should_receive(:value)
-        subject.stub :feed => [stub(custom_properties: { "x-wr-timezone" =>  [@value] })]
+        subject.stub :feed => [stub(custom_properties: { "x_wr_timezone" =>  [@value] })]
         subject.send(:get_timezone)
       end
 
@@ -111,7 +111,7 @@ module IcalImporter
       end
 
       it "returns nil if no timezone x property exists" do
-        subject.stub :feed => [stub(custom_properties: { "x-wr-derpherp" =>  [@value] })]
+        subject.stub :feed => [stub(custom_properties: { "x_wr_derpherp" =>  [@value] })]
         subject.send(:get_timezone).should be_nil
       end
     end
@@ -120,7 +120,7 @@ module IcalImporter
       it "finds the feed's name out of the x properties" do
         @value = stub
         @value.should_receive(:value)
-        subject.stub :feed => [stub(custom_properties: { "x-wr-calname" =>  [@value] })]
+        subject.stub :feed => [stub(custom_properties: { "x_wr_calname" =>  [@value] })]
         subject.send(:get_name)
       end
 
@@ -129,7 +129,7 @@ module IcalImporter
       end
 
       it "returns nil if no name x property exists" do
-        subject.stub :feed => [stub(custom_properties: { "x-wr-derpherp" =>  [@value] })]
+        subject.stub :feed => [stub(custom_properties: { "x_wr_derpherp" =>  [@value] })]
         subject.send(:get_name).should be_nil
       end
     end

@@ -58,14 +58,14 @@ module IcalImporter
     private
 
     def get_timezone
-      if feed.present? && feed.first.custom_properties["x-wr-timezone"].present?
-        feed.first.custom_properties["x-wr-timezone"].first.value
+      if feed.present? && feed.first.custom_properties["x_wr_timezone"].present?
+        feed.first.custom_properties["x_wr_timezone"].first.value
       end
     end
 
     def get_name
-      if feed.present? && feed.first.custom_properties["x-wr-calname"].present?
-        feed.first.custom_properties["x-wr-calname"].first.value
+      if feed.present? && feed.first.custom_properties["x_wr_calname"].present?
+        feed.first.custom_properties["x_wr_calname"].first.value
       end
     end
 
