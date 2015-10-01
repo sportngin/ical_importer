@@ -7,7 +7,7 @@ module IcalImporter
     def initialize(event)
       @event = event
       begin
-        @utc = @event.dtstart.try(:tzid) != :floating
+        @utc = @event.dtstart.tz_utc
       rescue
         @utc = true
       end

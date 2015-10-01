@@ -2,7 +2,7 @@ require 'spec_helper'
 module IcalImporter
   describe RemoteEvent do
     subject { RemoteEvent.new(event) }
-    let(:event) { stub :dtstart => stub(:tzid => nil) }
+    let(:event) { stub :dtstart => stub(:tz_utc => true) }
     it { should respond_to :description }
     it { should respond_to :rrule }
     it { should respond_to :exdate }
@@ -15,7 +15,7 @@ module IcalImporter
       end
 
       describe "dtstart tzid == :floating" do
-        let(:event) { stub :dtstart => stub(:tzid => :floating) }
+        let(:event) { stub :dtstart => stub(:tz_utc => false) }
         it "sets utc and event" do
           subject.event.should == event
           subject.utc?.should == false
@@ -42,7 +42,7 @@ module IcalImporter
         let(:event) { stub :dtstart => stub(
           :is_a? => true,
           :utc? => true,
-          :tzid => nil,
+          :tz_utc => true,
           :time => "20120715".to_datetime,
           :utc => "20120715".to_datetime.utc) }
         it "uses the utc time of the datetime" do
