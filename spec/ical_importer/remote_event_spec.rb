@@ -58,7 +58,7 @@ module IcalImporter
           :uid => "1629F7A5-5A69-43CB-899E-4CE9BD5F069F",
           :title => "Recurring Event",
           :utc => true,
-          :description => nil,
+          :description => "",
           :location => "",
           :start_date_time => "Wed, 14 Sep 2016 00:00:00 +0000".to_datetime,
           :end_date_time => "Thu, 15 Sep 2016 00:00:00 +0000".to_datetime,
