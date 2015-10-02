@@ -8,7 +8,7 @@ GIT
 PATH
   remote: .
   specs:
-    ical_importer (0.1.5)
+    ical_importer (0.1.6)
       activesupport (> 3.0.0, < 4.0.0)
       i18n
       icalendar
