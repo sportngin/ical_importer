@@ -40,7 +40,7 @@ module IcalImporter
                            :location => stub(:to_s => "here"),
                            :start_date_time => "today",
                            :end_date_time => "tomorrow",
-                           :recurrence_id => 1
+                           :recurrence_id => "20120715".to_datetime
       }
       it "creates a new event" do
         RemoteEvent.stub(:new => remote_event)

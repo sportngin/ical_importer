@@ -2,7 +2,7 @@ module IcalImporter
   class RemoteEvent
     attr_accessor :event, :utc
     alias :utc? :utc
-    delegate :uid, :summary, :location, :recurrence_id, :description, :rrule, :exdate, :to => :event
+    delegate :uid, :summary, :location, :description, :rrule, :exdate, :to => :event
 
     def initialize(event)
       @event = event
@@ -19,6 +19,10 @@ module IcalImporter
 
     def end_date_time
       get_date_time_for :dtend
+    end
+
+    def recurrence_id
+      event.recurrence_id ? event.recurrence_id.to_datetime : nil
     end
 
     def all_day_event?
