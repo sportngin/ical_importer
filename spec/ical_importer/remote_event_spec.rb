@@ -2,10 +2,9 @@ require 'spec_helper'
 module IcalImporter
   describe RemoteEvent do
     subject { RemoteEvent.new(event) }
-    let(:event) { stub :dtstart => stub(:tzid => nil) }
+    let(:event) { stub :dtstart => stub(:tz_utc => true) }
     it { should respond_to :description }
-    it { should respond_to :recurs? }
-    it { should respond_to :rrule_property }
+    it { should respond_to :rrule }
     it { should respond_to :exdate }
     describe "#initialize" do
       describe "dtstart tzid nil" do
@@ -16,7 +15,7 @@ module IcalImporter
       end
 
       describe "dtstart tzid == :floating" do
-        let(:event) { stub :dtstart => stub(:tzid => :floating) }
+        let(:event) { stub :dtstart => stub(:tz_utc => false) }
         it "sets utc and event" do
           subject.event.should == event
           subject.utc?.should == false
@@ -42,7 +41,8 @@ module IcalImporter
       describe "without a floating tzid" do
         let(:event) { stub :dtstart => stub(
           :is_a? => true,
-          :tzid => nil,
+          :utc? => true,
+          :tz_utc => true,
           :time => "20120715".to_datetime,
           :utc => "20120715".to_datetime.utc) }
         it "uses the utc time of the datetime" do
@@ -52,13 +52,13 @@ module IcalImporter
     end
 
     describe "#event_attributes" do
-      let(:event) { RiCal.parse(sample_ics).first.events.first }
+      let(:event) { Icalendar.parse(sample_ics).first.events.first }
       it "fills in some attributes" do
         subject.event_attributes.should == {
           :uid => "1629F7A5-5A69-43CB-899E-4CE9BD5F069F",
           :title => "Recurring Event",
           :utc => true,
-          :description => nil,
+          :description => "",
           :location => "",
           :start_date_time => "Wed, 14 Sep 2016 00:00:00 +0000".to_datetime,
           :end_date_time => "Thu, 15 Sep 2016 00:00:00 +0000".to_datetime,

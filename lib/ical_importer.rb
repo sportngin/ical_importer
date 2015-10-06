@@ -1,5 +1,6 @@
 require 'active_support/all'
-require 'ri_cal'
+require 'tzinfo'
+require 'icalendar'
 
 require 'open-uri'
 require 'timeout'

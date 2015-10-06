@@ -12,8 +12,8 @@ module IcalImporter
     def build
       # handle recuring events
       @local_event.tap do |le|
-        if @event.recurs?
-          @rrule = @event.rrule_property.first # only support recurrence on one schedule
+        if @event.rrule.present?
+          @rrule = @event.rrule.first # only support recurrence on one schedule
           # set out new event's basic rucurring properties
           le.attributes = recurrence_attributes
 
@@ -49,27 +49,28 @@ module IcalImporter
 
     def recurrence_attributes
       {
-        :recur_interval => recur_map[@rrule.freq],
-        :recur_interval_value => @rrule.interval,
+        :recur_interval => recur_map[@rrule.frequency],
+        :recur_interval_value => @rrule.interval || 1,
         :recur_end_date => @rrule.until.try(:to_datetime)
       }
     end
 
     def set_date_exclusion
       # set any date exclusions
-      @local_event.date_exclusions = @event.exdate.flatten.map{|d| DateExclusion.new(d)}
+      @local_event.date_exclusions = @event.exdate.flatten.map{|d| DateExclusion.new(d.to_datetime)}
     end
 
     def frequency_set
-      # if .bounded? is an integer that's googles "recur X times"
+      # if bounded is an integer that's googles "recur X times"
       # if that's the case we try to figure out the date it should be by
-      # multiplying thise "X" times by the frequency that the event recurrs
-      case @rrule.freq
+      # multiplying this "X" times by the frequency that the event recurrs
+      interval = @rrule.interval || 1
+      case @rrule.frequency
       when "DAILY"
-        @local_event.recur_end_date = @local_event.start_date_time + (@rrule.bounded? * @rrule.interval - 1).days if @rrule.bounded?.is_a? Fixnum # convert X times to a date
+        @local_event.recur_end_date = @local_event.start_date_time + (@rrule.count * interval - 1).days if @rrule.count.is_a? Fixnum # convert X times to a date
       when "WEEKLY"
-        if @rrule.to_ical.include?("BYDAY=")
-          remote_days = @rrule.to_ical.split("BYDAY=").last.split(";WKST=").first.split(',')
+        if @rrule.value_ical.include?("BYDAY=")
+          remote_days = @rrule.value_ical.split("BYDAY=").last.split(";WKST=").first.split(',')
           day_map.each do |abbr, day|
             @local_event.send "recur_week_#{day}=", remote_days.include?(abbr)
           end
@@ -80,12 +81,12 @@ module IcalImporter
           end
         end
         # recurrence X times is probably broken - we can select multiple times in a week
-        @local_event.recur_end_date = @local_event.start_date_time + ((@rrule.bounded? * @rrule.interval - 1) / remote_days.length).weeks if @rrule.bounded?.is_a?(Fixnum)
+        @local_event.recur_end_date = @local_event.start_date_time + ((@rrule.count * interval - 1) / remote_days.length).weeks if @rrule.count.is_a? Fixnum
       when "MONTHLY"
-        @local_event.recur_month_repeat_by = (@rrule.to_ical =~ /BYDAY/) ? "day_of_week" : "day_of_month"
-        @local_event.recur_end_date = @local_event.start_date_time + (@rrule.bounded? * @rrule.interval - 1).months if @rrule.bounded?.is_a? Fixnum # convert X times to a date
+        @local_event.recur_month_repeat_by = (@rrule.value_ical =~ /BYDAY/) ? "day_of_week" : "day_of_month"
+        @local_event.recur_end_date = @local_event.start_date_time + (@rrule.count * interval - 1).months if @rrule.count.is_a? Fixnum # convert X times to a date
       when "YEARLY"
-        @local_event.recur_end_date = @local_event.start_date_time + (@rrule.bounded? * @rrule.interval - 1).years if @rrule.bounded?.is_a? Fixnum # convert X times to a date
+        @local_event.recur_end_date = @local_event.start_date_time + (@rrule.count * interval - 1).years if @rrule.count.is_a? Fixnum # convert X times to a date
       end
     end
 

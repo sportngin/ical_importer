@@ -17,7 +17,7 @@ module IcalImporter
 
       it "fails with incorrect event type" do
         new_event = stub(:is_a? => false)
-        expect { subject.<<(new_event) }.to raise_error(ArgumentError, "Must be a RiCal Event")
+        expect { subject.<<(new_event) }.to raise_error(ArgumentError, "Must be an Icalendar Event")
       end
     end
 
@@ -34,13 +34,13 @@ module IcalImporter
     end
 
     describe "#build_new_local_event" do
-      let(:remote_event) { stub :summary => "birthdayy",
-                           :uid => 1,
-                           :description => "do stuff",
-                           :location => "here",
+      let(:remote_event) { stub :summary => stub(:to_s => "birthdayy"),
+                           :uid => stub(:to_s => 1),
+                           :description => stub(:to_s => "do stuff"),
+                           :location => stub(:to_s => "here"),
                            :start_date_time => "today",
                            :end_date_time => "tomorrow",
-                           :recurrence_id => 1
+                           :recurrence_id => "20120715".to_datetime
       }
       it "creates a new event" do
         RemoteEvent.stub(:new => remote_event)

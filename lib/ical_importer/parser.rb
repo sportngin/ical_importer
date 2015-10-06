@@ -17,7 +17,7 @@ module IcalImporter
       if should_parse?
         @bare_feed.pos = 0
         begin
-          @feed = RiCal.parse @bare_feed
+          @feed = Icalendar.parse @bare_feed
         rescue Exception => e
           # I know, I'm dirty, fix this to log to a config'd log
         end
@@ -58,14 +58,14 @@ module IcalImporter
     private
 
     def get_timezone
-      if feed.present? && feed.first.x_properties["X-WR-TIMEZONE"].present?
-        feed.first.x_properties["X-WR-TIMEZONE"].first.value
+      if feed.present? && feed.first.custom_properties["x_wr_timezone"].present?
+        feed.first.custom_properties["x_wr_timezone"].first.value
       end
     end
 
     def get_name
-      if feed.present? && feed.first.x_properties["X-WR-CALNAME"].present?
-        feed.first.x_properties["X-WR-CALNAME"].first.value
+      if feed.present? && feed.first.custom_properties["x_wr_calname"].present?
+        feed.first.custom_properties["x_wr_calname"].first.value
       end
     end
 

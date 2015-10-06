@@ -7,7 +7,7 @@ module IcalImporter
     end
 
     def <<(event)
-      raise ArgumentError, "Must be a RiCal Event" unless event.is_a? RiCal::Component::Event
+      raise ArgumentError, "Must be an Icalendar Event" unless event.is_a? Icalendar::Event
       @events_to_build << event
     end
 
@@ -24,10 +24,10 @@ module IcalImporter
     def build_new_local_event(remote_event)
       remote_event = RemoteEvent.new remote_event
       LocalEvent.new({
-        :uid => remote_event.uid,
-        :title => remote_event.summary,
-        :description => remote_event.description,
-        :location => remote_event.location || '',
+        :uid => remote_event.uid.to_s,
+        :title => remote_event.summary.to_s,
+        :description => remote_event.description.to_s,
+        :location => remote_event.location.to_s,
         :start_date_time => remote_event.start_date_time,
         :end_date_time => remote_event.end_date_time,
         :date_exclusions => [DateExclusion.new(remote_event.recurrence_id)],

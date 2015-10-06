@@ -13,7 +13,7 @@ module IcalImporter
     describe '#initialize' do
       it "parses with rical" do
         Parser.any_instance.stub(:open_ical).and_return bare_stuff
-        RiCal.should_receive(:parse).with bare_stuff
+        Icalendar.should_receive(:parse).with bare_stuff
         Parser.new(url)
       end
 
@@ -102,7 +102,7 @@ module IcalImporter
       it "finds the feed's timezone out of the x properties" do
         @value = stub
         @value.should_receive(:value)
-        subject.stub :feed => [stub(x_properties: { "X-WR-TIMEZONE" =>  [@value] })]
+        subject.stub :feed => [stub(custom_properties: { "x_wr_timezone" =>  [@value] })]
         subject.send(:get_timezone)
       end
 
@@ -111,7 +111,7 @@ module IcalImporter
       end
 
       it "returns nil if no timezone x property exists" do
-        subject.stub :feed => [stub(x_properties: { "X-WR-DERPHERP" =>  [@value] })]
+        subject.stub :feed => [stub(custom_properties: { "x_wr_derpherp" =>  [@value] })]
         subject.send(:get_timezone).should be_nil
       end
     end
@@ -120,7 +120,7 @@ module IcalImporter
       it "finds the feed's name out of the x properties" do
         @value = stub
         @value.should_receive(:value)
-        subject.stub :feed => [stub(x_properties: { "X-WR-CALNAME" =>  [@value] })]
+        subject.stub :feed => [stub(custom_properties: { "x_wr_calname" =>  [@value] })]
         subject.send(:get_name)
       end
 
@@ -129,7 +129,7 @@ module IcalImporter
       end
 
       it "returns nil if no name x property exists" do
-        subject.stub :feed => [stub(x_properties: { "X-WR-DERPHERP" =>  [@value] })]
+        subject.stub :feed => [stub(custom_properties: { "x_wr_derpherp" =>  [@value] })]
         subject.send(:get_name).should be_nil
       end
     end
