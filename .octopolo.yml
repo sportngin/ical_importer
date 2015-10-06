@@ -1,0 +1,5 @@
+deploy_branch: master
+github_repo: sportngin/ical_importer
+branches_to_keep:
+- master
+semantic_versioning: true
