@@ -68,6 +68,13 @@ parser.single_events
 
 * Recurrence events are not the same as recurring events
 
+# Known Issues
+
+* ICal feeds with `,`'s
+  - This gem uses icalendar version `2.3.0`. There is an issue(https://github.com/icalendar/icalendar/issues/121) when importing events with fields that do not escape `,`'s.
+  - The issue is fixed with https://github.com/icalendar/icalendar/commit/9a00cae834f78c265fdccecaf37bf3e77f91416f
+  - Add `gem 'icalendar', :git => 'https://github.com/icalendar/icalendar', :ref => '108b5278a6d4cdc150e49cdcb641e40440c8c278'` to your project's gemfile to fix this issue.
+
 # TODO
 
 * Current implementation based on an extraction from another app
