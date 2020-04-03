@@ -16,11 +16,11 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = IcalImporter::VERSION
 
-  gem.add_dependency 'activesupport', ['> 3.0.0', '< 5.0']
+  gem.add_dependency 'activesupport', ['> 3.0.0', '< 7.0']
   gem.add_dependency 'icalendar', '~> 2.3.0'
   gem.add_dependency 'i18n', '~> 0.6'
 
-  gem.add_development_dependency 'rake'
+  gem.add_development_dependency 'rake', '~> 11'
   gem.add_development_dependency 'rspec', '~> 2.11'
   gem.add_development_dependency 'awesome_print', '~> 1.0'
 end
